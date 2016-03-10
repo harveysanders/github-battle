@@ -17,6 +17,7 @@ var ConfirmBattleContainer = React.createClass({
 		console.log('componentWillMount');
 	},
 	componentDidMount: function() {
+		//'this' lesson https://egghead.io/playlists/the-this-key-word-250c37d9
 		var query = this.props.location.query; //props location?
 		console.log('componentDidMount');
 		// Fetch info from github then udpdate state
@@ -28,7 +29,7 @@ var ConfirmBattleContainer = React.createClass({
 					isLoading: false,
 					playersInfo: [players[0], players[1]]
 				});
-			});
+			}.bind(this)); //bound to external this
 
 	},
 	componentWillReceiveProps: function() {
@@ -37,9 +38,20 @@ var ConfirmBattleContainer = React.createClass({
 	componentWillUnmount: function() {
 		console.log('componentWillUnmount');
 	},
+	handleInitiateBatte: function() {
+		this.context.router.push({
+			pathname: '/results',
+			state: { //read more later
+				playersInfo: this.state.playersInfo
+			}
+		});
+	},
 	render: function() {
 		return (
-			<ConfirmBattle isLoading={this.state.isLoading} playersInfo={this.state.playersInfo}/>
+			<ConfirmBattle 
+				isLoading={this.state.isLoading}
+				playersInfo={this.state.playersInfo}
+				onInitiateBattle={this.handleInitiateBatte}/>
 		)	
 	}
 });
